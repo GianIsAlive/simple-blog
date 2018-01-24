@@ -1,0 +1,39 @@
+{
+  "name": "simpleblog",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon ./server/server.js",
+    "build": "./node_modules/.bin/webpack -w"
+  },
+  "author": "Gian",
+  "dependencies": {
+    "axios": "^0.17.1",
+    "connect-history-api-fallback": "^1.5.0",
+    "express": "^4.16.2",
+    "mongoose": "^5.0.1",
+    "redis": "^2.8.0",
+    "validator": "^9.2.0",
+    "vue": "^2.5.2",
+    "vue-router": "^3.0.1",
+    "vuex": "^3.0.1"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "css-loader": "^0.28.7",
+    "extract-text-webpack-plugin": "^3.0.0",
+    "file-loader": "^0.11.2",
+    "node-sass": "^4.5.3",
+    "nodemon": "^1.12.0",
+    "sass-loader": "^6.0.6",
+    "style-loader": "^0.18.2",
+    "uglifyjs-webpack-plugin": "^1.1.5",
+    "url-loader": "^0.6.2",
+    "vue-loader": "^13.0.4",
+    "vue-template-compiler": "^2.5.2",
+    "webpack": "^3.5.6"
+  }
+}
