@@ -102,7 +102,7 @@ export default {
   }
   .posts-text .name {
     font-size: 1.0rem;
-    margin-bottom: 6px;
+    margin-bottom: 5px;
   }
   .posts-text .date {
     font-size: 0.8rem;

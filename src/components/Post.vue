@@ -6,16 +6,21 @@
       <p class="date">{{post.date}}</p>
       <p class="content">{{post.content}}</p>
     </section>
-    <form class="post-comments">
-      <input type="text" placeholder="Your Name" v-model="comment.name" />
-      <textarea id="comment" cols="30" rows="10" v-model="comment.content"></textarea>
-      <button v-on:click="postComment">Publish</button>
+    <form class="post-comment">
+      <button class="add-comment-button" v-if="commentActive === false" v-on:click="activateComment">Add Comments</button>
+      <section class="post-comment-active" v-if="commentActive === true">
+        <input type="text" placeholder="Your Name" v-model="comment.name" />
+        <textarea class="comment" placeholder="What do you think about this post?" v-model="comment.content"></textarea>
+        <button class="post-comment-button" v-on:click="postComment">Publish</button>
+      </section>
     </form>
-    <h2 class="comments">Comments:</h2>
-    <section class="comments-container" v-for="comment in comments" :key="comment.id" v-if="comments !== null">
-      <h3 class="name">{{comment.name}}</h3>
-      <p class="name">{{comment.date}}</p>
-      <p class="content">{{comment.content}}</p>
+    <section class="comments">
+      <h2 class="comments-title">Comments:</h2>
+      <section class="comments-container" v-for="comment in comments" :key="comment.id" v-if="comments !== null">
+        <h3 class="name">{{comment.name}}</h3>
+        <p class="date">{{comment.date}}</p>
+        <p class="content">{{comment.content}}</p>
+      </section>
     </section>
   </section>
 </template>
@@ -36,7 +41,8 @@ let data = {
     }),
     content: '',
   },
-  comments: null
+  comments: [],
+  commentActive: false
 }
 
 export default {
@@ -58,6 +64,12 @@ export default {
       });
     },
 
+    // Toggle comment form boolean value
+    activateComment(e) {
+      e.preventDefault();
+      data.commentActive = true;
+    },
+
     // Save comment to MongoDB
     // TODO: 
     // 1. Rerender comment section after comments are successfully posted
@@ -66,10 +78,15 @@ export default {
     // 4. Sanitize input data
     postComment(e) {
       e.preventDefault();
-      if (data.post === null) return;
+      if (data.comment.name === null || data.comment.content === null) return;
       axios.post('/post-comment', Object.assign(data.comment, {
         title: this.$route.params.title.replace(/-/g, ' ')
-      }));
+      })).then((response) => data.comments.push(response));
+      // Hide inpur fields after submit
+      // TODO: 
+      // 1. Add notification if comments are not successfully posted
+      // 2, Move to comment offset when successfully posted
+      data.commentActive = false;
     },
 
     // Get post from MongoDB
@@ -101,47 +118,83 @@ export default {
   .post {
     position: relative;
     width: 100%;
-    padding: 30px;
+    margin-top: 30px;
   }
-  .post-container {
+  .post-container,
+  .post-comment,
+  .comments {
+    position: relative;
     width: 70%;
+    padding: 30px;
+    margin-bottom: 30px;
+    border-left: 4px solid #D1D1D1;
   }
   .post-container * {
     margin-bottom: 15px;
   }
-  .post-container .title {
+  .post-container .title,
+  .comments .comments-title {
     font-size: 1.5rem;
     font-weight: 700;
   }
-  .post-container .content,
-  .comments-container .content {
+  .post-container .content {
     font-size: 1.0rem;
   }
-  .post-container .name,
-  .comments-container .name {
+  .post-container .name {
     font-size: 1.0rem;
+    margin-bottom: 5px;
   }
-  .post-container .date,
-  .comments-container .date {
-    font-size: 1.0rem;
+  .post-container .date {
+    font-size: 0.8rem;
   }
-  .post-comments,
-  .comments-container {
-    width: 70%;
-  }
-  .post-container,
-  .post-comments,
-  .post-comments input,
-  .post-comments textarea,
-  .post-comments button,
-  .comments-container,
-  .comments {
+  .post-comment input,
+  .post-comment textarea,
+  .post-comment button {
     display: block;
     margin-bottom: 15px;
+    background-color: transparent;
   }
-  .post-comments textarea {
+  .post-comment input {
+    width: 100%;
+    height: 40px;
+    font-size: 1.0rem;
+    border-bottom: 1px solid #D1D1D1;
+  }
+  .post-comment textarea {
     width: 100%;
     height: 150px;
+    font-size: 1.0rem;
+    border: 1px solid #D1D1D1;
+  }
+  .post-comment button {
+    padding: 15px 25px;
+    height: 45px;
+    border-radius: 7px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #454545;
+    border: 1px solid #D1D1D1;
+  }
+  .post-comment button:hover {
+    cursor: pointer;
+    border: 1px solid #909090;
+  }
+  .comments .comments-title {
+    margin-bottom: 30px;
+  }
+  .comments .comments-container {
+    margin-bottom: 30px;
+  }
+  .comments .comments-container .name {
+    font-size: 1.0rem;
+  }
+  .comments .comments-container .date {
+    font-size: 0.8rem;
+    margin-bottom: 5px;
+  }
+  .comments .comments-container .content {
+    font-size: 0.9rem;
   }
 </style>
 

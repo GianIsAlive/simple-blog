@@ -35,6 +35,10 @@ input, button, textarea {
 	background-color: #FFFFFF;
 }
 
+textarea {
+	resize: none;
+}
+
 a {
 	text-decoration: none;
 }
