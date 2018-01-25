@@ -107,7 +107,7 @@ if (cluster.isMaster) {
   });
 
   app.use('/dist', express.static(path.join(__dirname, '../dist')));
-  app.use('/post', express.static(path.join(__dirname, '../dist')));
+  app.use('/post/*/dist', express.static(path.join(__dirname, '../dist')));
   app.use('/img', express.static(path.join(__dirname, '../dist/img')));
 
   const port = process.env.PORT || 3000;
