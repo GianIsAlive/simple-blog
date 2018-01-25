@@ -92,11 +92,10 @@ if (cluster.isMaster) {
   });
 
   app.post('/post-comment', (req, res) => {
-    commentModel.create(req.body, (err) => {
+    commentModel.create(req.body, (err, response) => {
       if (err) res.status(400).end('failed to post comment');
-      console.log('successsfully saved!');
+      res.status(200).send(response);
     });
-    res.status(200).end('success');
   });
 
   app.get('/get-comments/:title', (req, res) => {
