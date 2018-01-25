@@ -1,5 +1,18 @@
-Run the app:
+## Just a simple blog app
 
-1. ```yarn build```
-2. ```yarn start```
-3. ```go to http://localhost:3000/```
+![home](./github/1_home.png)
+
+![post](./github/2_post.png)
+
+![post](./github/3_view.png)
+
+## Run the app:
+```
+yarn build
+```
+```
+yarn start
+```
+```
+go to http://localhost:3000/
+```
