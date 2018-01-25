@@ -39,11 +39,11 @@ let data = {
     date: date.toLocaleDateString('en-US', {
       year: 'numeric', month: 'long', day: 'numeric'
     }),
-    content: '',
+    content: ''
   },
   comments: [],
-  commentActive: false
-}
+  commentActive: false,
+};
 
 export default {
   name: 'post',

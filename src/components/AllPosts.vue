@@ -22,6 +22,7 @@
 <script>
 import axios from 'axios';
 
+// Random images
 import one from '../assets/one.jpg';
 import two from '../assets/two.jpg';
 import three from '../assets/three.jpg';
@@ -41,6 +42,9 @@ export default {
     return data;
   },
   methods: {
+    // TODO:
+    // 1. Default sort posts from newest to oldest
+    // 2. Allow viewer to search specific aritcle
     getPosts () {
       axios.get('/all-posts')
         .then((response) => {
