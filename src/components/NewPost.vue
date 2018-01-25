@@ -13,7 +13,7 @@ import axios from 'axios';
 
 const date = new Date();
 
-const data = {
+let data = {
   title: '',
   name: '',
   content: ''

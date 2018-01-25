@@ -7,7 +7,7 @@
       <p class="content">{{post.content}}</p>
     </section>
     <form class="post-comments">
-      <input type="text" placeholder="Your Name" v-model="comment.name">
+      <input type="text" placeholder="Your Name" v-model="comment.name" />
       <textarea id="comment" cols="30" rows="10" v-model="comment.content"></textarea>
       <button v-on:click="postComment">Publish</button>
     </form>
@@ -21,12 +21,13 @@
 </template>
 
 <script>
-
 import axios from 'axios';
+
+import { loadState, saveState } from '../util/localStorage';
 
 const date = new Date();
 
-const data = {
+let data = {
   post: null,
   comment: {
     name: '',
@@ -47,10 +48,14 @@ export default {
   // Get post from RedisDB
   methods: {
     getPost (name, title) {
-      axios.get(`/post/${name}/${title}`)
-        .then(response => {
-          data.post = response.data;
-        });
+      return new Promise((resolve, reject) => {
+        axios.get(`/post/${name}/${title}`)
+          .then(response => {
+            data.post = response.data;
+            resolve(data.post);
+          })
+          .catch(() => { reject('failed to get post') });
+      });
     },
 
     // Save comment to MongoDB
@@ -63,7 +68,7 @@ export default {
       e.preventDefault();
       if (data.post === null) return;
       axios.post('/post-comment', Object.assign(data.comment, {
-        title: this.$route.params.title
+        title: this.$route.params.title.replace(/-/g, ' ')
       }));
     },
 
@@ -73,15 +78,21 @@ export default {
     // 2. Load More comment when user scroll to the bottom
     // 3. Sanitize input data
     getComment(title) {
-      axios.get(`/get-comments/${title}`)
-        .then(response => {
-          data.comments = response.data;
-        });
+      return new Promise((resolve, reject) => {
+        axios.get(`/get-comments/${title}`)
+          .then(response => {
+            data.comments = response.data;
+            resolve(data.comments);
+          })
+          .catch(() => { reject('failed to get comment') });;
+      });
     }
   },
   mounted () {
-    this.getPost(this.$route.params.name, this.$route.params.title);
-    this.getComment(this.$route.params.title);
+    let name = this.$route.params.name.replace(/-/g, ' ');
+    let title = this.$route.params.title.replace(/-/g, ' ');
+    this.getPost(name, title);
+    this.getComment(title);
   }
 }
 </script>
