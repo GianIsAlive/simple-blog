@@ -58,10 +58,12 @@ if (cluster.isMaster) {
     res.status(200).send(req.locals);
   });
 
+  // Post comment to Mongo
   app.post('/post-comment', postComment, (req, res) => {
     res.status(200).send(req.locals);
   });
 
+  // Get comments from Mongo
   app.get('/get-comments/:title', getComments, (req, res) => {
     res.status(200).send(req.locals);
   });
